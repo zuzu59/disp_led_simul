@@ -1,8 +1,11 @@
 # disp_led_simul
 Petite simulation d'un panneau d'affichage à LED RGB en LUA script
 
+zf190524.1153
+
+
 ## Buts
-Si on veut se fabriquer un *grand* panneau d'affichage avec des LED RGB, vient tout de suite le problème de combien de LED RGB va-t-on mettre en X et en Y afin de pouvoir avoir l'affichage compter.
+Si on veut se fabriquer un *grand* panneau d'affichage avec des LED RGB, vient tout de suite le problème de combien de LED RGB va-t-on mettre en X et en Y afin de pouvoir avoir l'affichage désiré.
 
 Ce petit simulateur de panneau de LED RGB écrit en LUA va nous permettre de voir le résultat avant de commencer à souder :-)
 
