@@ -19,6 +19,6 @@ love .
 
 
 ## Sources
-http://lua-users.org/wiki/LuaGraphics
-https://love2d.org/
-https://love2d.org/wiki/love.graphics
+http://lua-users.org/wiki/LuaGraphics<br>
+https://love2d.org/<br>
+https://love2d.org/wiki/love.graphics<br>
