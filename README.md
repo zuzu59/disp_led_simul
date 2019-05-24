@@ -15,7 +15,7 @@ Aussi il ne travaille pas avec une *matrice* mais avec un vecteur RGB, car c'est
 ## Résultats
 7 lignes de 42 LED, soit 294 LED RGB
 
-![](42x7=294_leds.gif)
+![](https://github.com/zuzu59/disp_led_simul/blob/master/42x7%3D294_leds.gif)
 
 
 
@@ -78,4 +78,4 @@ https://www.aliexpress.com/item/1m-4m-5m-WS2813-Dual-signal-wires-30-60-pixels-l
 
 
 
-zf190524.1618
+zf190524.1619
