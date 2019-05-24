@@ -12,19 +12,41 @@ Il a été écrit en LUA car le micro contrôleur utilisé pour ce projet sera u
 Aussi il ne travaille pas avec une *matrice* mais avec un vecteur RGB, car c'est le vecteur RGB utilisé dans la lib LUA ws8212 du NodeMCU (pas encore terminé cette partie)
 
 
+## Résultats
+7 lignes de 42 LED, soit 294 LED RGB
+
+![](42x7=294_leds.gif)
+
+
 
 ## Installation
+
+### Sous Linux
 ```
 sudo add-apt-repository ppa:bartbes/love-stable
 sudo apt update
 sudo apt install lua love
 ```
 
+### Sous MAC
+Il faut descendre ceci et le dezipper:
+
+https://bitbucket.org/rude/love/downloads/love-11.2-macos.zip
+
+
 
 ## Utilisation
+
+### Sous Linux
 ```
 cd project folder
 love .
+```
+
+### Sous MAC
+```
+cd project folder
+/Applications/love.app/Contents/MacOS/love .
 ```
 
 
@@ -56,4 +78,4 @@ https://www.aliexpress.com/item/1m-4m-5m-WS2813-Dual-signal-wires-30-60-pixels-l
 
 
 
-zf190524.1545
+zf190524.1618
