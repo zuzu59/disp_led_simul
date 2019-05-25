@@ -1,49 +1,49 @@
--- number of leds 
+-- global variables
+zmatrix={}
+effects={}
 
--- font size
-font_x = 5
-font_y = 7
+-- load the effects to use
+dofile("./effects/effect1.lua")
+dofile("./effects/effect2.lua")
+local neffects = table.getn(effects)
 
-nlines = 1
-nbled_max = 300
+-- dofile("bigmatrixfont.lua")
 
-disp_y = font_y * nlines
-disp_x = math.floor(nbled_max / disp_y)
+-- input parameters ---------------------------------------
+local radius = 10           -- led circle radius
+local spacing_x = 40        -- spacing between center of leds (horizontal)
+local spacing_y = 40        -- spacing between center of leds (vertical)
+local padding = 20          -- space for the windows border
+local screenFactor = 0.5    -- fraction of the screen to use
+local nbled_max = 800        -- max number of number of leds 
+local font_x = 8            -- font size (pixel horizontal)
+local font_y = 8            -- font size (pixel vertical)
+local nlines = 2            -- number of lines (will  then use all leds that can fit)
+local effect_duration = 10  -- change effect every given seconds
+-- end of input parameters ---------------------------------
 
--- char_par_line = math.floor(disp_x / font_x)
 
-
--- disp_x = font_x * nchar_x
-print("width  (leds):  ", disp_x )
-print("height (leds):  ", disp_y )
-print("number of leds: ", disp_x * disp_y)
-print("number of lines:", nlines)
-print("chars per line:", disp_x / font_x)
-
+-- led matrix dimensions
+local disp_y = font_y * nlines
+local disp_x = math.floor(nbled_max / disp_y)
+local max_chars_per_line = math.floor(disp_x / font_x)
 
 disp_x = disp_x - 1
 disp_y = disp_y - 1
-radius = 10
-spacing_x = 40
-spacing_y = 40
-screenFactor = 0.5
-
-padding = 20
-ar = 1.0 * disp_x / disp_y
 
 -- determine screen size
-ret = love.window.setMode(0, 0)
-sw = love.graphics.getWidth() * screenFactor
-sh = love.graphics.getHeight() * screenFactor
+love.window.setMode(0, 0)
+local sw = love.graphics.getWidth() * screenFactor
+local sh = love.graphics.getHeight() * screenFactor
 
 -- compute the max size of the window
-w = spacing_x * disp_x + 2 * padding
-h = spacing_y * disp_y + 2 * padding
+local w = spacing_x * disp_x + 2 * padding
+local h = spacing_y * disp_y + 2 * padding
 
 -- if it is too large, then scale proportionally
 if ( w > sw or h > sh ) then
-  rw = sw / w
-  rh = sh / h
+  local rw = sw / w
+  local rh = sh / h
   print("rw = ", rw)
   print("rh = ", rh)
   rf = math.min(rw, rh)
@@ -55,40 +55,57 @@ if ( w > sw or h > sh ) then
   spacing_y = spacing_y * rf
 end
 
+-- report final dimensions
+print("no. effects:", neffects)
+print("led radius:", radius)
+print("width  (leds):  ", disp_x )
+print("height (leds):  ", disp_y )
+print("number of leds: ", disp_x * disp_y)
+print("number of lines:", nlines)
+print(string.format("chars per line: %d  +  %d extra led columns", max_chars_per_line, disp_x - max_chars_per_line * font_x))
+
+-- set windows size to fit the led matrix
 love.window.setMode(w, h, {fullscreen=false})
 
-h=h-2*padding
-w=w-2*padding
 
-generation = 0
-
-zmatrice = {}
-
-function updateMatrix()
-  for i = 0, disp_x, 1
-  do
-    zmatrice[i] = {}
-    for j = 0, disp_y, 1
-    do
-      -- zmatrice[i][j] = (i + j) % 1
-      zmatrice[i][j] = {}
-      zmatrice[i][j][0] = i/disp_x
-      zmatrice[i][j][1] = (generation % 255) / 255
-      zmatrice[i][j][2] = j/disp_y
-      generation = generation + 1
-    end
+local generation = 0
+for i = 0, disp_x, 1 do
+  zmatrix[i] = {}
+  for j = 0, disp_y, 1 do
+    zmatrix[i][j] = {}
+    zmatrix[i][j].r = 0
+    zmatrix[i][j].g = 0
+    zmatrix[i][j].b = 0
   end
 end
 
+local t0=os.time()
+local effect_index = 1
+
+local effect = effects[effect_index]
+effect.init(disp_x, disp_y, effect.params)
+
 function love.draw()
-  updateMatrix()
   for i = 0, disp_x, 1
   do
     for j = 0, disp_y, 1
     do
-      love.graphics.setColor(zmatrice[i][j][0], zmatrice[i][j][1], zmatrice[i][j][2])
+      love.graphics.setColor(zmatrix[i][j].r, zmatrix[i][j].g, zmatrix[i][j].b)
       love.graphics.circle("fill", padding + i * spacing_x, padding + j * spacing_y, radius )
     end
   end
-  love.timer.sleep(1/10)
+
+  love.timer.sleep(effect.wait)
+
+  local t1 = os.time()
+  if (os.difftime(t1, t0) > effect_duration) then
+    generation = 0
+    t0 = t1
+    effect_index = 1 + effect_index % neffects
+    print("Changing effect. No effect is no. ", effect_index);
+    effect = effects[effect_index]
+  else
+    generation = generation + 1
+    effect.update(disp_x, disp_y, generation, effect.params)
+  end
 end
