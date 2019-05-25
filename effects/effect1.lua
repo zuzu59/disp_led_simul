@@ -6,7 +6,7 @@ effect.params = {
   f2=100, -- period for green
   f3=400  -- period for blue
 }
-effect.update = function(nx, ny, gen, params)
+effect.update = function(gen, params)
   for i = 0, nx, 1
   do
     for j = 0, ny, 1
@@ -17,8 +17,8 @@ effect.update = function(nx, ny, gen, params)
     end
   end
 end
-effect.init = function(nx, ny, params) 
-  effect.update(nx, ny, 0, params)
+effect.init = function(params) 
+  effect.update(0, params)
 end
 
 table.insert(effects, effect)
