@@ -10,12 +10,13 @@ local nlines = 2            -- number of lines (will  then use all leds that can
 local effect_duration = 10  -- change effect every given seconds
 -- end of input parameters ---------------------------------
 
--- dofile("./utils.lua");
+dofile("./utils.lua");
 
 -- load the effects to use
 -- TODO: load all files in effects directory
 dofile("./effects/effect1.lua")
 dofile("./effects/effect2.lua")
+dofile("./effects/effect3.lua")
 local neffects = table.getn(effects)
 
 
